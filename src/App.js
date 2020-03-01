@@ -21,25 +21,36 @@ class App extends React.Component {
 			e.preventDefault(); //prevents default refresh/flush all state behaviour when form submit occurs.
 			const city=e.target.elements.city.value; //e from form render
 			const country=e.target.elements.country.value;
-		try{ 
+		
 			const api_call = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=${API_KEY}&units=metric`);
-			if(!api_call.ok){
-				throw Error(api_call.statusText); // fetch only rejects a promise if network error. check for 404/500 manually
-			}
+			
 			const data = await api_call.json();
-			console.log(data);
-			this.setState({
-				temperature: data.main.temp,
-				city: data.name,
-				country: data.sys.country,
-				humidity: data.main.humidity,
-				description: data.weather[0].description,
-				error: ""
-			});
-		}catch(error){
-			console.log(error);
-		}
+			//if data doesnt exist, we entered invalid api call params. display same error message to UI
+			
+			if(city && country && data){
+				console.log(data);
+				this.setState({
+					temperature: data.main.temp,
+					city: data.name,
+					country: data.sys.country,
+					humidity: data.main.humidity,
+					description: data.weather[0].description,
+					error: ""
+				});
+			}else{
+				//pass error message to be displayed in form component.
+				this.setState({
+					temperature: undefined,
+					city: undefined,
+					country: undefined,
+					humidity: undefined,
+					description: undefined,
+					error: "Please enter a valid country and/or city"				
+				});
 
+
+			}
+		
 	}
 	render(){
 		//make sure you only return everythign in one parent element
