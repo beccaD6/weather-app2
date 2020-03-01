@@ -27,7 +27,7 @@ class App extends React.Component {
 			const data = await api_call.json();
 			//if data doesnt exist, we entered invalid api call params. display same error message to UI
 			
-			if(city && country && data){
+			if(city && country && api_call.ok){
 				console.log(data);
 				this.setState({
 					temperature: data.main.temp,
@@ -52,23 +52,43 @@ class App extends React.Component {
 			}
 		
 	}
+
 	render(){
 		//make sure you only return everythign in one parent element
 		//GIVE ACCESS to getWeather to form class so can call it on submit 
 		//give acess to state to weather component for it to display api results
 		return (
 			<div>
-			 <Titles />
-			 <Form getWeather={this.getWeather}/> 
-			 <Weather 
-			 	temperature={this.state.temperature} 
-			 	city={this.state.city}
-			 	country={this.state.country}
-			 	humidity={this.state.humidity}
-			 	description={this.state.description}
-			 	error={this.state.error}
-			 	/>
-			</div>
+			 <div className="wrapper">
+				 <div className="main">
+					 <div className="container">
+					 	<div className="row">
+						 	<div className="col-xs-5 title-container">
+						 		<Titles />
+
+						 	</div>
+						 	<div className="col-xs-7 form-container">
+						 		
+					 	 		<Form getWeather={this.getWeather}/> 
+						 	 	
+								 <Weather 
+								 	temperature={this.state.temperature} 
+								 	city={this.state.city}
+								 	country={this.state.country}
+								 	humidity={this.state.humidity}
+								 	description={this.state.description}
+								 	error={this.state.error}
+								 	/>
+						 	</div>
+					 	</div>
+				 	</div>
+			 	</div>
+		 	</div>
+
+
+			 
+			
+		</div>
 		);
 	}
 };
